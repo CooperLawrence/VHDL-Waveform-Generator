@@ -34,7 +34,7 @@ def generateSquare(samples):
 		print("\"", output[i], "\",")
 
 def generateSpecial(samples):
-	print("Damped Sine:\"", end = '')
+	print("Damped Sine:")
 	output = []
 	for i in range(0, samples):
 		output.append(sin((i / samples) * pi * 2) * (i / samples))
@@ -44,8 +44,8 @@ def generateSpecial(samples):
 def main(samples):
 	generateSine(samples)
 	generateTriangle(samples)
-	generateSquare(samples)
-	generateSpecial(samples)
+	#generateSquare(samples)
+	#generateSpecial(samples)
 
 #Called at runtime
 if (__name__ == "__main__"):
