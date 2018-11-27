@@ -5,9 +5,9 @@ entity counter is
 port (
 	en : in std_logic; --Enable
 	clk : in std_logic; --Clock
-	samples : in std_logic_vector(2 downto 0) --Number of samples per period
-	period : in std_logic_vector(9 downto 0) --Length of period
-	address : out std_logic_vector(6 downto 0) --Address bus
+	samples : in std_logic_vector(2 downto 0) --2^n samples per period (this might be wrong!)
+	period : in std_logic_vector(9 downto 0) --Length of period (0 to 1023)
+	address : out std_logic_vector(6 downto 0); --Address bus
 	);
 end counter
 
