@@ -15,7 +15,7 @@ architecture toparch is
 	signal functionbus: std_logic_vector(1 downto 0);
 	singnal addressbus: std_logic_vector(6 downto 0);
 	signal databus: std_logic_vector(31 downto 0);
-	signal latchclk: std_logic;
+	signal counterclk: std_logic;
 	
 	component fsm
 		port (
@@ -51,8 +51,8 @@ architecture toparch is
 	end component;
 
 begin
-	c1: fsm port map(key(1 downto 0), functionbus(1 downto 0));
-	c2: counter port map(sw(17), clock_50, sw(2 downto 0), sw(12 downto 3), addressbus);
+	c1: fsm port map(clock_50, key(3 downto 0), sw(12 downto 3), functionbus(1 downto 0), counterclock);
+	c2: counter port map(sw(17), counterclock, sw(2 downto 0), addressbus);
 	c3: memory port map(functionbus(1 downto 0), addressbus(6 downto 0), databus(31 downto 0));
-	c4: datalatch port map(latchclk, databus(31 downto 0), vout(31 downto 0));
+	c4: datalatch port map(counterclk, databus(31 downto 0), vout(31 downto 0));
 end toparch;

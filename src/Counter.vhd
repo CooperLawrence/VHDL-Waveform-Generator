@@ -18,7 +18,7 @@ begin
 	begin
 		if (en = '1') then
 			if (clk'event and clk = '1') then
-				address <= address + (2 ** samples) after period ms --Automatically rolls over from 127 to 0, and flips the carry bit
+				address <= address + (2 ** samples) --Automatically rolls over from 127 to 0, and flips the carry bit
 				end if;
 			end if;
 		end if;
