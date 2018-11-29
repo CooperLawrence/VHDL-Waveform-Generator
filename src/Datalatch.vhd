@@ -1,4 +1,4 @@
-import ieee;
+library ieee;
 use ieee.std_logic_1164.all;
 
 entity datalatch is
@@ -11,7 +11,7 @@ entity datalatch is
 end datalatch;
 
 --32-bit d flip-flop
-architecture datalatcharch is
+architecture datalatcharch of datalatch is
 begin
 	process(clk)
 	begin

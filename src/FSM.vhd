@@ -1,11 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity FSM is
 	port (
 		clk: in std_logic;
-		function: in std_logic_vector(3 downto 0);
-		period : in std_logic_vector(9 downto 0) --Length of period (0 to 1023)
+		selection: in std_logic_vector(3 downto 0);
+		period : in std_logic_vector(9 downto 0); --Length of period (0 to 1023)
 		operation: out std_logic_vector (1 downto 0);
 		pulse: out std_logic
 	);
@@ -14,50 +15,62 @@ end FSM;
 architecture FSM_arch of FSM is
 	type states is (Sine, Triangle, Square, Special);
 	signal CS: states;
+	signal pulsetmp: std_logic;
 
-	signal clockcount: 
 begin
-	CS <= Sine;
-	process (CS, function)
+	--CS <= Sine;
+	pulsetmp <= '0';
+	
+	process (CS, selection)
 	begin
 		case CS is
 			when Sine =>
-				if function = "0001" then CS <= Sine;
-				elsif function = "0010" then CS <= Triangle;
-				elsif function = "0100" then CS <= Square;
-				elsif function = "1000" then CS <= Special;
+				if selection = "0001" then CS <= Sine;
+				elsif selection = "0010" then CS <= Triangle;
+				elsif selection = "0100" then CS <= Square;
+				elsif selection = "1000" then CS <= Special;
 				end if;
 
 				operation <= "00";
 			when Triangle =>
-				if function = "0001" then CS <= Sine;
-				elsif function = "0010" then CS <= Triangle;
-				elsif function = "0100" then CS <= Square;
-				elsif function = "1000" then CS <= Special;
+				if selection = "0001" then CS <= Sine;
+				elsif selection = "0010" then CS <= Triangle;
+				elsif selection = "0100" then CS <= Square;
+				elsif selection = "1000" then CS <= Special;
 				end if;
 
 				operation <= "01";
 			when Square =>
-				if function = "0001" then CS <= Sine;
-				elsif function = "0010" then CS <= Triangle;
-				elsif function = "0100" then CS <= Square;
-				elsif function = "1000" then CS <= Special;
+				if selection = "0001" then CS <= Sine;
+				elsif selection = "0010" then CS <= Triangle;
+				elsif selection = "0100" then CS <= Square;
+				elsif selection = "1000" then CS <= Special;
 				end if;
 
 				operation <= "10";
 			when Special =>
-				if function = "0001" then CS <= Sine;
-				elsif function = "0010" then CS <= Triangle;
-				elsif function = "0100" then CS <= Square;
-				elsif function = "1000" then CS <= Special;
+				if selection = "0001" then CS <= Sine;
+				elsif selection = "0010" then CS <= Triangle;
+				elsif selection = "0100" then CS <= Square;
+				elsif selection = "1000" then CS <= Special;
+				end if;
+				
+				operation <= "11";
+			when others =>
+			  if selection = "0001" then CS <= Sine;
+				elsif selection = "0010" then CS <= Triangle;
+				elsif selection = "0100" then CS <= Square;
+				elsif selection = "1000" then CS <= Special;
 				end if;
 
-				operation <= "11";
+				operation <= "00";
 		end case;
 	end process;
 
-	process (pulse)
+	process (pulsetmp)
 	begin
-		pulse <= not pulse after period/2 ms; --Manipulate the waveform period
+		pulsetmp <= not pulsetmp after (to_integer(unsigned(period)) / 2) * 1ms; --Manipulate the waveform period
+		
+		pulse <= pulsetmp;
 	end process;
 end FSM_arch;

@@ -11,16 +11,19 @@ entity top is
 	);
 end top;
 
-architecture toparch is
+architecture toparch of top is
 	signal functionbus: std_logic_vector(1 downto 0);
-	singnal addressbus: std_logic_vector(6 downto 0);
+	signal addressbus: std_logic_vector(6 downto 0);
 	signal databus: std_logic_vector(31 downto 0);
 	signal counterclk: std_logic;
 	
 	component fsm
 		port (
-			function: in std_logic_vector(1 downto 0);
-			operation: out std_logic_vector(1 downto 0)
+			clk: in std_logic;
+		  selection: in std_logic_vector(3 downto 0);
+		  period : in std_logic_vector(9 downto 0); --Length of period (0 to 1023)
+		  operation: out std_logic_vector (1 downto 0);
+		  pulse: out std_logic
 		);
 	end component;
 
@@ -36,9 +39,9 @@ architecture toparch is
 
 	component memory
 		port (
-			function: in std_logic_vector(1 downto 0);
+			selection: in std_logic_vector(1 downto 0);
 			address: in std_logic_vector(6 downto 0);
-			data: out std_logic_vector(31 downto 0);
+			data: out std_logic_vector(31 downto 0)
 		);
 	end component;
 
@@ -51,8 +54,8 @@ architecture toparch is
 	end component;
 
 begin
-	c1: fsm port map(clock_50, key(3 downto 0), sw(12 downto 3), functionbus(1 downto 0), counterclock);
-	c2: counter port map(sw(17), counterclock, sw(2 downto 0), addressbus);
+	c1: fsm port map(clock_50, key(3 downto 0), sw(12 downto 3), functionbus(1 downto 0), counterclk);
+	c2: counter port map(sw(17), counterclk, sw(2 downto 0), sw(12 downto 3), addressbus);
 	c3: memory port map(functionbus(1 downto 0), addressbus(6 downto 0), databus(31 downto 0));
 	c4: datalatch port map(counterclk, databus(31 downto 0), vout(31 downto 0));
 end toparch;
