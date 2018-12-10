@@ -6,9 +6,9 @@ use ieee.math_real.all;
 entity Memory is
 port(
 	CS: in std_logic_vector(1 downto 0); --Current state
-	EN: in std_logic; --Enable
-	dataBus: out std_logic_vector(7 downto 0); --Data Bus
-	address: in std_logic_vector (6 downto 0) -- Address bus
+	--EN: in std_logic; --Enable
+	address: in std_logic_vector (6 downto 0); -- Address bus
+	dataBus: out std_logic_vector(7 downto 0) --Data Bus
 	);
 end Memory;
 
@@ -542,10 +542,10 @@ special <= (0 ,
 process (CS)
 begin
 	case CS is	
-		when "00" => dataBus <= std_logic_vector(to_signed(to_integer(sine(to_integer(unsigned(address)))), 32));
-		when "01" => dataBus <= std_logic_vector(to_signed(to_integer(square(to_integer(unsigned(address)))), 32));
-		when "10" => dataBus <= std_logic_vector(to_signed(to_integer(triangle(to_integer(unsigned(address)))), 32));
-		when "11" => dataBus <= std_logic_vector(to_signed(to_integer(special(to_integer(unsigned(address)))), 32));
+		when "00" => dataBus <= std_logic_vector(to_signed(sine(to_integer(unsigned(address))), 8));
+		when "01" => dataBus <= std_logic_vector(to_signed(square(to_integer(unsigned(address))), 8));
+		when "10" => dataBus <= std_logic_vector(to_signed(triangle(to_integer(unsigned(address))), 8));
+		when others => dataBus <= std_logic_vector(to_signed(special(to_integer(unsigned(address))), 8)); -- when "11" gave error of only 4 out of 81 cases covered
 	end case;
 end process;
 	

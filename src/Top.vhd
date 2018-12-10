@@ -6,7 +6,6 @@ entity top is
 		clock_50: in std_logic; --Clock
 		sw: in std_logic_vector(17 downto 0);
 		key: in std_logic_vector(3 downto 0);
-
 		vout: out std_logic_vector(7 downto 0)
 	);
 end top;
@@ -39,9 +38,9 @@ architecture toparch of top is
 
 	component memory
 		port (
-			selection: in std_logic_vector(1 downto 0);
-			address: in std_logic_vector(6 downto 0);
-			data: out std_logic_vector(7 downto 0)
+			CS: in std_logic_vector(1 downto 0); 
+	    address: in std_logic_vector (6 downto 0); 
+	    dataBus: out std_logic_vector(7 downto 0) 
 		);
 	end component;
 
@@ -56,6 +55,6 @@ architecture toparch of top is
 begin
 	c1: fsm port map(clock_50, key(3 downto 0), sw(12 downto 3), functionbus(1 downto 0), counterclk);
 	c2: counter port map(sw(17), counterclk, sw(2 downto 0), sw(12 downto 3), addressbus);
-	c3: memory port map(functionbus(1 downto 0), addressbus(6 downto 0), databus(7 downto 0));
+	c3: memory port map(functionbus(1 downto 0), addressbus(6 downto 0), databus(7 downto 0)); -- doesnt get data or selection somehow? but gets address
 	c4: datalatch port map(counterclk, databus(7 downto 0), vout(7 downto 0));
 end toparch;

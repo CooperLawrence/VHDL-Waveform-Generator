@@ -40,6 +40,10 @@ end record;
 type test_vector_array is array (natural range <>) of test_vector;
     constant test_vectors : test_vector_array := (
 			--Sample cases
+			("100001111111111111","0001","00000000"), --Samples= 2^7 - 1 = 127, Key -> Sine, EN = 1, Period = 1023 (2^10 -1), OUT = 0 (first value of array)
+			("100001111111111111","0010","00000111"), -- Samples = 127, Key -> Triangle, EN = 1, Period = 1023, OUT = 7 (3rd value of array)
+			("100000111111111111","0100","11111111"), -- Samples = 127, Key -> Square, EN = 1, Period = 511, OUT = 127 (first bunch of value of array)
+			("100001111111111111","1000","00000001")	-- Samples = 127, Key -> Special, EN = 1, Period = 1023, OUT = 1 (6th value of array)
         );
 -- signals                                                   
 SIGNAL CLOCK_50 : STD_LOGIC;
@@ -51,11 +55,11 @@ COMPONENT top
 	CLOCK_50 : IN STD_LOGIC;
 	SW: IN STD_LOGIC_VECTOR(17 DOWNTO 0);
 	KEY : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-	VOUT : BUFFER STD_LOGIC_VECTOR(7 DOWNTO 0);
+	VOUT : BUFFER STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END COMPONENT;
 BEGIN
-	i1 : counter_top
+	i1 : Top
 	PORT MAP (
 -- list connections between master ports and signals
 	CLOCK_50 => CLOCK_50,

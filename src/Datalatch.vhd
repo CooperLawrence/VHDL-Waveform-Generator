@@ -5,7 +5,6 @@ entity datalatch is
 	port (
 		clk: in std_logic;
 		d: in std_logic_vector(7 downto 0);
-
 		q: out std_logic_vector(7 downto 0)
 	);
 end datalatch;
